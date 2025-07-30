@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { Calendar, MessageCircle, Activity, BookOpen, Clock, TrendingUp, Heart, Plus } from "lucide-react";
+import { Calendar, MessageCircle, Activity, BookOpen, Clock, TrendingUp, Heart, Plus, Users } from "lucide-react";
+import AssignedTherapist from "../../components/AssignedTherapist"; // Assuming this component is defined elsewhere
 
 const UserDashboard = () => {
-  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
 
   // Mock data - in real app, this would come from API
   const recentMoods = [
@@ -18,15 +19,15 @@ const UserDashboard = () => {
   const upcomingAppointments = [
     {
       id: 1,
-      therapist: "Dr. Sarah Johnson",
-      date: "2024-01-20",
+      therapist: "Dr. Salar Mehfooz",
+      date: "2025-08-30",
       time: "2:00 PM",
       type: "Video Call",
     },
     {
       id: 2,
-      therapist: "Dr. Michael Chen",
-      date: "2024-01-22",
+      therapist: "Dr. Raja Abdullah",
+      date: "2025-09-1",
       time: "10:00 AM",
       type: "In-Person",
     },
@@ -42,10 +43,10 @@ const UserDashboard = () => {
       bgColor: "bg-blue-50",
     },
     {
-      title: "Start Chat",
+      title: "Start New Chat",
       description: "Message your therapist",
       icon: MessageCircle,
-      link: "/chat/new",
+      link: "/start-chat/:therapistId",
       color: "from-green-500 to-green-600",
       bgColor: "bg-green-50",
     },
@@ -64,6 +65,14 @@ const UserDashboard = () => {
       link: "/content-library",
       color: "from-amber-500 to-amber-600",
       bgColor: "bg-amber-50",
+    },
+    {
+      title: "View All Therapists",
+      description: "Explore available therapists",
+      icon: Users,
+      link: "/therapist-list",
+      color: "from-teal-500 to-teal-600",
+      bgColor: "bg-teal-50",
     },
   ];
 
@@ -110,9 +119,17 @@ const UserDashboard = () => {
             <Heart className="h-8 w-8 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Welcome back, {user?.name || "User"}!</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Welcome back, {user?.username}!</h1>
             <p className="text-gray-600 mt-1">How are you feeling today? Let's continue your wellness journey.</p>
           </div>
+        </div>
+      </div>
+
+      {/* Assigned Therapist */}
+      <div className="mb-8">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-6">Your Therapist</h2>
+          <AssignedTherapist />
         </div>
       </div>
 
@@ -176,7 +193,7 @@ const UserDashboard = () => {
           <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-gray-900">Upcoming Sessions</h2>
-              <Link to="/appointments/user" className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
+              <Link to="/user/appointments" className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
                 View all
               </Link>
             </div>
