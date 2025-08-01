@@ -1,7 +1,7 @@
 // src/api/authAPI.js
 
 export const loginUser = async (credentials) => {
-  const res = await fetch("http://localhost:5000/api/auth/login", {
+  const res = await fetch("${process.env.REACT_APP_API_BASE_URL}/api/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -23,7 +23,7 @@ export const loginUser = async (credentials) => {
 };
 
 export const registerUser = async (userData) => {
-  const res = await fetch("http://localhost:5000/api/auth/register", {
+  const res = await fetch("${process.env.REACT_APP_API_BASE_URL}/api/auth/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -47,7 +47,7 @@ export const registerUser = async (userData) => {
 export const fetchUserProfile = async (userId) => {
   const token = localStorage.getItem("token");
 
-  const res = await fetch(`http://localhost:5000/api/users/me/${userId}`, {
+  const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/users/me/${userId}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,

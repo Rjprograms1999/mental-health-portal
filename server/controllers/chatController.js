@@ -1,5 +1,5 @@
 import ChatThread from "../models/ChatThread.js";
-import ChatMessage from "../models/chatMessage.js";
+import ChatMessage from "../models/ChatMessage.js";
 import User from "../models/user.js";
 import { createNotification } from "./notificationController.js";
 // ✅ Send a message (new thread or existing)
@@ -9,8 +9,7 @@ export const sendMessage = async (req, res) => {
     const senderId = req.user?.id;
 
     if (!senderId) return res.status(401).json({ message: "Unauthorized" });
-    if (!message?.trim())
-      return res.status(400).json({ message: "Missing message" });
+    if (!message?.trim()) return res.status(400).json({ message: "Missing message" });
 
     let thread;
 
@@ -18,8 +17,7 @@ export const sendMessage = async (req, res) => {
       thread = await ChatThread.findById(threadId);
       if (!thread) return res.status(404).json({ message: "Thread not found" });
     } else {
-      if (!recipientId)
-        return res.status(400).json({ message: "Missing recipientId" });
+      if (!recipientId) return res.status(400).json({ message: "Missing recipientId" });
 
       const sender = await User.findById(senderId);
       const recipient = await User.findById(recipientId);
@@ -28,14 +26,10 @@ export const sendMessage = async (req, res) => {
         return res.status(404).json({ message: "Invalid sender or recipient" });
       }
 
-      const validPair =
-        (sender.role === "user" && recipient.role === "therapist") ||
-        (sender.role === "therapist" && recipient.role === "user");
+      const validPair = (sender.role === "user" && recipient.role === "therapist") || (sender.role === "therapist" && recipient.role === "user");
 
       if (!validPair) {
-        return res
-          .status(403)
-          .json({ message: "Only user ↔ therapist chat allowed" });
+        return res.status(403).json({ message: "Only user ↔ therapist chat allowed" });
       }
 
       const userId = sender.role === "user" ? senderId : recipientId;
@@ -63,8 +57,7 @@ export const sendMessage = async (req, res) => {
     });
 
     // Notify the recipient about the new message
-    const recipientUserId =
-      req.user.role === "user" ? thread.therapistId : thread.userId;
+    const recipientUserId = req.user.role === "user" ? thread.therapistId : thread.userId;
 
     try {
       await createNotification({
@@ -121,9 +114,7 @@ export const getThreadMessages = async (req, res) => {
     res.status(200).json(messages);
   } catch (err) {
     console.error("GetMessages Error:", err.message);
-    res
-      .status(500)
-      .json({ message: "Failed to load messages", error: err.message });
+    res.status(500).json({ message: "Failed to load messages", error: err.message });
   }
 };
 
@@ -136,15 +127,9 @@ export const getMyThreads = async (req, res) => {
     let threads;
 
     if (role === "user") {
-      threads = await ChatThread.find({ userId }).populate(
-        "therapistId",
-        "username email"
-      );
+      threads = await ChatThread.find({ userId }).populate("therapistId", "username email");
     } else if (role === "therapist") {
-      threads = await ChatThread.find({ therapistId: userId }).populate(
-        "userId",
-        "username email"
-      );
+      threads = await ChatThread.find({ therapistId: userId }).populate("userId", "username email");
     } else {
       return res.status(403).json({ message: "Access denied: invalid role" });
     }
@@ -152,8 +137,6 @@ export const getMyThreads = async (req, res) => {
     res.status(200).json(threads);
   } catch (err) {
     console.error("GetThreads Error:", err.message);
-    res
-      .status(500)
-      .json({ message: "Failed to load chat threads", error: err.message });
+    res.status(500).json({ message: "Failed to load chat threads", error: err.message });
   }
 };

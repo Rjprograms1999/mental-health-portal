@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000/api/chat";
+const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}/api/chat`;
 
 // ✅ Get all chat threads for the current user
 export const fetchChats = async () => {

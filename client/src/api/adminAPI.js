@@ -8,7 +8,7 @@ const getAuthHeaders = () => {
 
 // ✅ Fetch all users
 export const fetchUsers = async () => {
-  const res = await fetch(`http://localhost:5000/api/users`, {
+  const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/users`, {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error("Failed to fetch users");
@@ -17,7 +17,7 @@ export const fetchUsers = async () => {
 
 // ✅ Delete a user
 export const deleteUser = async (id) => {
-  const res = await fetch(`http://localhost:5000/api/users/${id}`, {
+  const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/users/${id}`, {
     method: "DELETE",
     headers: getAuthHeaders(),
   });
@@ -27,7 +27,7 @@ export const deleteUser = async (id) => {
 
 // ✅ Fetch all appointments
 export const fetchAllAppointments = async () => {
-  const res = await fetch(`http://localhost:5000/api/appointments/admin/all `, {
+  const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/appointments/admin/all `, {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error("Failed to fetch appointments");
@@ -36,7 +36,7 @@ export const fetchAllAppointments = async () => {
 
 // ✅ Fetch all content
 export const fetchAllContent = async () => {
-  const res = await fetch(`http://localhost:5000/api/content`, {
+  const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/content`, {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error("Failed to fetch content");
@@ -45,7 +45,7 @@ export const fetchAllContent = async () => {
 
 // ✅ Delete content item
 export const deleteContent = async (id) => {
-  const res = await fetch(`http://localhost:5000/api/content/${id}`, {
+  const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/content/${id}`, {
     method: "DELETE",
     headers: getAuthHeaders(),
   });
@@ -55,7 +55,7 @@ export const deleteContent = async (id) => {
 
 // ✅ Fetch all mood logs
 export const fetchAllMoodLogs = async () => {
-  const res = await fetch(`http://localhost:5000/api/moodlogs/admin/all`, {
+  const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/moodlogs/admin/all`, {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error("Failed to fetch mood logs");
@@ -64,7 +64,7 @@ export const fetchAllMoodLogs = async () => {
 
 // ✅ Delete mood log
 export const deleteMoodLog = async (id) => {
-  const res = await fetch(`http://localhost:5000/api/moodlogs/${id}`, {
+  const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/moodlogs/${id}`, {
     method: "DELETE",
     headers: getAuthHeaders(),
   });
@@ -74,7 +74,7 @@ export const deleteMoodLog = async (id) => {
 
 // ✅ Fetch all therapists
 export const fetchTherapists = async () => {
-  const res = await fetch(`http://localhost:5000/api/users/therapists`, {
+  const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/users/therapists`, {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error("Failed to fetch therapists");
