@@ -1,4 +1,4 @@
-const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}/api/content`;
+const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/content`;
 
 export const createContent = async (data) => {
   const res = await fetch(`${BASE_URL}`, {
@@ -14,7 +14,7 @@ export const createContent = async (data) => {
 };
 
 export const fetchAllContent = async () => {
-  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/content`, {
+  const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/content`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
