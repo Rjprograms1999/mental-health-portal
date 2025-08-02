@@ -12,70 +12,55 @@ const parseError = async (res, fallback = "Request failed") => {
 };
 
 // Fetch prescriptions by userId
-export const fetchPrescriptions = createAsyncThunk(
-  "prescriptions/fetch",
-  async (userId) => {
-    const res = await fetch(
-      `http://localhost:5000/api/prescriptions/${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    );
+export const fetchPrescriptions = createAsyncThunk("prescriptions/fetch", async (userId) => {
+  const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/prescriptions/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
 
-    if (!res.ok) {
-      throw new Error(await parseError(res, "Failed to fetch prescriptions"));
-    }
-
-    return await res.json();
+  if (!res.ok) {
+    throw new Error(await parseError(res, "Failed to fetch prescriptions"));
   }
-);
+
+  return await res.json();
+});
 
 // Create a new prescription
-export const createPrescription = createAsyncThunk(
-  "prescriptions/create",
-  async (data) => {
-    const res = await fetch(`http://localhost:5000/api/prescriptions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(data),
-    });
+export const createPrescription = createAsyncThunk("prescriptions/create", async (data) => {
+  const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/prescriptions`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify(data),
+  });
 
-    if (!res.ok) {
-      throw new Error(await parseError(res, "Failed to create prescription"));
-    }
-
-    return await res.json();
+  if (!res.ok) {
+    throw new Error(await parseError(res, "Failed to create prescription"));
   }
-);
+
+  return await res.json();
+});
 
 // Update prescription
-export const updatePrescription = createAsyncThunk(
-  "prescriptions/update",
-  async (prescription) => {
-    const res = await fetch(
-      `http://localhost:5000/api/prescriptions/${prescription._id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(prescription),
-      }
-    );
+export const updatePrescription = createAsyncThunk("prescriptions/update", async (prescription) => {
+  const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/prescriptions/${prescription._id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify(prescription),
+  });
 
-    if (!res.ok) {
-      throw new Error(await parseError(res, "Failed to update prescription"));
-    }
-
-    return await res.json();
+  if (!res.ok) {
+    throw new Error(await parseError(res, "Failed to update prescription"));
   }
-);
+
+  return await res.json();
+});
 
 const prescriptionSlice = createSlice({
   name: "prescriptions",

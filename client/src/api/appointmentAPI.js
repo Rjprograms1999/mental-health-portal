@@ -32,7 +32,7 @@ export const fetchUserAppointments = async (userId) => {
 // Fetch appointments for a specific therapist
 export const fetchTherapistAppointments = async () => {
   const token = localStorage.getItem("token");
-  const res = await fetch("${import.meta.env.VITE_API_BASE_URL}/api/appointments/therapist", {
+  const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/appointments/therapist`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

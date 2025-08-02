@@ -1,90 +1,72 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Fetch notifications thunk (existing)
-export const fetchNotifications = createAsyncThunk(
-  "notifications/fetchNotifications",
-  async (_, thunkAPI) => {
-    try {
-      const userId = JSON.parse(localStorage.getItem("user"))?.id;
+export const fetchNotifications = createAsyncThunk("notifications/fetchNotifications", async (_, thunkAPI) => {
+  try {
+    const userId = JSON.parse(localStorage.getItem("user"))?.id;
 
-      const response = await fetch(
-        `http://localhost:5000/api/notifications/${userId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/notifications/${userId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        return thunkAPI.rejectWithValue(errorData);
-      }
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+    if (!response.ok) {
+      const errorData = await response.json();
+      return thunkAPI.rejectWithValue(errorData);
     }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
   }
-);
+});
 
 // Clear notifications on server thunk
-export const clearNotificationsOnServer = createAsyncThunk(
-  "notifications/clearNotificationsOnServer",
-  async (_, thunkAPI) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/notifications/clear`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      if (!response.ok) {
-        const errorData = await response.json();
-        return thunkAPI.rejectWithValue(errorData);
-      }
-      return await response.json();
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+export const clearNotificationsOnServer = createAsyncThunk("notifications/clearNotificationsOnServer", async (_, thunkAPI) => {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/notifications/clear`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      return thunkAPI.rejectWithValue(errorData);
     }
+    return await response.json();
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
   }
-);
+});
 
 // New: Mark notification as read on server thunk
-export const markNotificationAsReadOnServer = createAsyncThunk(
-  "notifications/markNotificationAsReadOnServer",
-  async (notificationId, thunkAPI) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/notifications/${notificationId}/read`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+export const markNotificationAsReadOnServer = createAsyncThunk("notifications/markNotificationAsReadOnServer", async (notificationId, thunkAPI) => {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/notifications/${notificationId}/read`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        return thunkAPI.rejectWithValue(errorData);
-      }
-
-      // Assuming the API returns the updated notification
-      const updatedNotification = await response.json();
-      return updatedNotification;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+    if (!response.ok) {
+      const errorData = await response.json();
+      return thunkAPI.rejectWithValue(errorData);
     }
+
+    // Assuming the API returns the updated notification
+    const updatedNotification = await response.json();
+    return updatedNotification;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
   }
-);
+});
 
 const notificationsSlice = createSlice({
   name: "notifications",
@@ -133,9 +115,7 @@ const notificationsSlice = createSlice({
 
       .addCase(markNotificationAsReadOnServer.fulfilled, (state, action) => {
         const updatedNotification = action.payload;
-        const index = state.list.findIndex(
-          (n) => n._id === updatedNotification._id
-        );
+        const index = state.list.findIndex((n) => n._id === updatedNotification._id);
         if (index !== -1) {
           state.list[index] = updatedNotification;
         }
@@ -146,7 +126,6 @@ const notificationsSlice = createSlice({
   },
 });
 
-export const { markAsRead, clearNotifications, addNotification } =
-  notificationsSlice.actions;
+export const { markAsRead, clearNotifications, addNotification } = notificationsSlice.actions;
 
 export default notificationsSlice.reducer;

@@ -1,51 +1,45 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Fetch current user profile
-export const fetchUserProfile = createAsyncThunk(
-  "user/fetchProfile",
-  async (_, thunkAPI) => {
-    try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/users/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+export const fetchUserProfile = createAsyncThunk("user/fetchProfile", async (_, thunkAPI) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/users/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-      if (!res.ok) {
-        throw new Error("Failed to fetch user profile");
-      }
-
-      return await res.json();
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err.message);
+    if (!res.ok) {
+      throw new Error("Failed to fetch user profile");
     }
+
+    return await res.json();
+  } catch (err) {
+    return thunkAPI.rejectWithValue(err.message);
   }
-);
+});
 
 // Fetch all therapists
-export const fetchTherapists = createAsyncThunk(
-  "user/fetchTherapists",
-  async (_, thunkAPI) => {
-    try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/users/therapists", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+export const fetchTherapists = createAsyncThunk("user/fetchTherapists", async (_, thunkAPI) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/users/therapists`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-      if (!res.ok) {
-        throw new Error("Failed to fetch therapists");
-      }
-
-      return await res.json();
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err.message);
+    if (!res.ok) {
+      throw new Error("Failed to fetch therapists");
     }
+
+    return await res.json();
+  } catch (err) {
+    return thunkAPI.rejectWithValue(err.message);
   }
-);
+});
 
 const userSlice = createSlice({
   name: "user",
