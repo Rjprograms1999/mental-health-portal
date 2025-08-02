@@ -65,7 +65,7 @@ export const getAssignedUsersForTherapist = createAsyncThunk("assignments/getAss
 // 4. Get therapist assigned to the current user
 export const getAssignedTherapistForUser = createAsyncThunk("assignments/getAssignedTherapistForUser", async (_, thunkAPI) => {
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/assignment/my-therapist`, {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/assignment/my-therapist`, {
       headers: getAuthHeaders(),
     });
     if (!res.ok) {
